@@ -175,7 +175,7 @@ objects besides `data.frame`.
 
 #### Numeric indexing
 You can think of a data frame as a table with rows and columns.  Each element in the data frame can be indexed by the position of the row and the column in respect to the whole data frame.  The index is specified as [R,C] where R is the position of the row (or row number) and C is the position of the column (or column number).  **Note that `[]` are used for indexing, while `()` are used to call a function**. Indexing in a data frame starts from 1.  To be able to extract specific data from the surveys data frame, we need to specify the indices or positions of the elements we want from it.   In the image below we zoom into the first three columns and rows of the surveys data frame and show their indexes displayed on top of their values in skyblue.  
-![](./images_raw/indexing_dataframe.svg)
+![](./img/indexing_dataframe.svg)
 
 The illustration above illustrates how **numeric indexing** works. Below are some examples of how we can retrieve subset of values from the surveys data frame using numeric indexing. 
 

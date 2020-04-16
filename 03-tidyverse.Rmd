@@ -12,6 +12,8 @@ suppressWarnings(surveys$date <- lubridate::ymd(paste(surveys$year,
                                                       sep = "-")))
 ```
 
+<br/>
+
 # Data exploration workflow
 When you are working on a project that requires data analysis, you will normally need to perform the following steps:
 
@@ -21,7 +23,7 @@ More information on this workflow can be found in the [R for Data Science](https
 
 1.  The first step in working with data is to first **import** your data into R.  This connects the external file/database to your project in R.
 2.  **Cleaning** or **tidying** the data will follow, which involves making sure that the data is consistent and that each row in the dataset is an observation and each column is a variable.  
-_e.g._ In the _surveys_ data frame the _month_ column specifies months as an integer from 1 to 12.  The dataset would have inconsistent data if there was a record in the dataset that had a month specified by name, _e.g._ September rather than 9.  A month of 0 or any other number that is not in the range 1 to 12 would have also made the dataset inconsistent.  Another common problem is capitalisation; the same word in the same column can be written with capitals or without; _e.g._ _Bird_ or _bird_ in the same _taxa_ column is inconsistent data.  During the _tidying_ stage it is important to make the dataset consistent and much as possible so that you can focus on the questions you are trying to solve in your analysis.  
+_e.g._ In the _surveys_ data frame the _month_ column specifies months as an integer from 1 to 12.  The dataset would have inconsistent data if there was a record in the dataset that had a month specified by name, _e.g._ September rather than 9.  A month of 0 or any other number that is not in the range 1 to 12 would have also made the dataset inconsistent.  Another common problem is capitalisation; the same word in the same column can be written with capitals or without; _e.g._ _Bird_ or _bird_ in the same _taxa_ column is inconsistent data.  During the _tidying_ stage it is important to make the dataset consistent as much as possible so that you can focus on the questions you are trying to solve in your analysis.  
 <!--image showing that each row is an observation and that column is a variable-->
 3.  Once the dataset is tidy, we move to the transformation stage.  To be able to **transform** your data you need to plan in advance what analyses you would like to perform on the dataset and what plots you would like to create.  In this way, you are able to plan ahead what variables/columns you will be using from the dataset, what additional variables you will need to create and what variables you will not be using so that you can keep only the columns in the dataset that are relevant for your analyses.  By the end of the transformation process you will have a dataset that is focused for your analyses and you can move on to the main exploratory mechanisms of this workflow which are visualisation and modelling.  These two stages complement each other and when exploring your data you normally repeat these two stages several times.    
 4.  **Visualising** data is a powerful way to explore your data.  Furthermore it helps you understand if there is any pattern in the data.   
@@ -38,7 +40,7 @@ In the next sections we will be looking at the _import_, _tidy_, _transform_ and
 <!--image of model with tidyverse hexagons under the ones that we will be covering in this course-->.  
 
 # Packages
-So far we have learnt how to use R with R's in-built functionality that we will refer to as **R Base**.  There is a way, however, to extend this functionality by using external functions through **packages**.  Packages in R are basically sets of additional functions that let you do more stuff. The functions we've been using so far, like `str()` or `head()`, come built into R; packages give you access to more of them.  Below is an illustration of the concept of a package.  
+So far we have learnt how to use R with R's in-built functionality that we will refer to as **R base**.  There is a way, however, to extend this functionality by using external functions through **packages**.  Packages in R are basically sets of additional functions that let you do more stuff. The functions we've been using so far, like `str()` or `head()`, come built into R; packages give you access to more of them.  Below is an illustration of the concept of a package.  
 
 <!--image of a package with functions in it-->
 
@@ -61,7 +63,7 @@ surveys[surveys$species=="albigula" &
         surveys$year==1977, ]
 
 # tidyverse
-filter(surveys, species=="albigula", year==1977)
+filter(surveys, species=="albigula" & year==1977)
 ```
 2. **Faster**
 <p>Using tidyverse is up to 10x faster[^1] when compared to the corresponding base R base functions.</p>
@@ -314,7 +316,7 @@ You can filter on multiple conditions:
 ```{r, eval=FALSE}
 #keep only the observations of animals collected from 1995 onwards
 #that are female from the surveys dataset.
-filter(surveys, year>=1995, sex=="F")
+filter(surveys, year>=1995 & sex=="F")
 ```
 
 ### Remove rows with `NA` (missing) values
@@ -346,7 +348,7 @@ Now let us apply the `is.na` function in `dplyr`'s `filter` function to remove t
 
 ```{r, eval=FALSE}
 filter(surveys, 
-  !is.na(weight), #remove rows that have weight as NA
+  !is.na(weight) &  #remove rows that have weight as NA
   !is.na(hindfoot_length))  #remove rows that have hindfoot_length as NA
 ```
 Another way to remove rows that have `NA` values is by using the `drop_na` function in the `tidyr` package.  The code above can be replaced by the following code which gives the same answer:
@@ -483,7 +485,7 @@ There are other ways on how to create new columns.  Refer to the dplyr cheat she
 > ### Challenge - the boxplot
 >
 > Using the `surveys_complete` dataset, create a [boxplot](https://ggplot2.tidyverse.org/reference/geom_boxplot.html) for each year on the x-axis and weight in kg on the y-axis. Use the subset dataset that was transformed in the previous challenge, *i.e.* the one that has the recent observations (from 1995 onwards).  As before try to do all the operations using pipes, without creating variables.  
-> **Hint**:  You will need to use the `mutate_at` function to convert the `year` column to `factor` type.
+
 >
 > **Answer**
 > 
@@ -502,7 +504,7 @@ There are other ways on how to create new columns.  Refer to the dplyr cheat she
 >    geom_boxplot()
 >```
 >
->You might notice that this code produces a warning message about the continuous data type of the x-axis and also creates a box plot with one single box and whisker averaged over all the years on the x-axis, rather than one for each year in the dataset as requested.  As shown in the [`ggplot2` cheat sheet](https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf), box plots display a discrete variable on the x-axis and a continuous variable on the y-axis.  At the moment `year` is treated as a continuous variable since its data type is `double`  (you can see this from the tibble).  To fix this, we need to convert the data type of the `year` column to a categorical one (`factor`) so that each year can be plotted as a separate box and whisker.  `dplyr` has the [`mutate_at`](https://dplyr.tidyverse.org/reference/mutate_all.html) function which does just that; it applies a function that you specify to the column/s of your choice.  Below is the updated code which includes the call to the `mutate_at` function. 
+>You might notice that this code produces a warning message about the continuous data type of the x-axis and also creates a box plot with one single box and whisker averaged over all the years on the x-axis, rather than one for each year in the dataset as requested.  As shown in the [`ggplot2` cheat sheet](https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf), box plots display a discrete variable on the x-axis and a continuous variable on the y-axis.  At the moment `year` is treated as a continuous variable since its data type is `double`  (you can see this from the tibble).  To fix this, we need to convert the data type of the `year` column to a categorical one (`factor`) so that each year can be plotted as a separate box and whisker.  
 >
 >```{r}
 >surveys_complete %>%
@@ -513,7 +515,7 @@ There are other ways on how to create new columns.  Refer to the dplyr cheat she
 >  #filter rows
 >  filter(year >= 1995) %>%
 >  #convert the year column to a factor
->  mutate_at(.vars="year", .funs=factor) %>%
+>  mutate(year=as.factor(year)) %>%
 >  #plot transformed data
 >  ggplot(mapping=aes(x=year, y=weight_kg)) +
 >    geom_boxplot()
@@ -525,7 +527,7 @@ There are other ways on how to create new columns.  Refer to the dplyr cheat she
 >
 >As mentioned the boxplot is used to visualise the distribution of a continuous variable.  In the example above we displayed the distribution of `weight` over the different years.  The figure below illustrates the different components of the boxplot. The bottom line of the box represents the 25th quantile, middle line the 50th quantile (or median) and the top line of the box is the 75th quantile. The whiskers can be thought of as defining the boundary of the confidence intervals of the distribution.  The dots outside these whiskers are the outliers.  
 >
-><center><img src="images_raw/boxplot.png" width="60%"/></center>
+><center><img src="img/boxplot.png" width="60%"/></center>
 >
 
 <br/>
@@ -694,7 +696,7 @@ There are other plots that can be used for a single continuous variable (see ONE
 ## Grouping data
 In the examples above we learnt how to summarise data over all observations, *e.g.,* we calculated the mean over all observations using the `summarise` function. However, in data analysis, especially when dealing with big data, a common approach to data exploration is the [**split-apply-combine**](https://www.jstatsoft.org/article/view/v040i01) strategy. The idea behind this strategy is to split the data into more managable pieces, apply any operations required on the data independently on each piece and then combine the results together. The figure below illustrates the approach that is done in the split-apply-combine approach.
 
-![](images_raw/split-apply-combine.svg)  
+![](img/split-apply-combine.svg)  
 
 Let us work on an example on how we can apply the split-apply-combine strategy on the `surveys_complete` dataset.  We would like to split the data by the different categories present in the `sex` column and calculate the mean weight for each category.  We can do this as follows:
 
