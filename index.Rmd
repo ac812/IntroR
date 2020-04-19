@@ -8,8 +8,7 @@ toc: hide
 20-21 April 2020   
 Bioinformatics Training Facility
 
-**Instructors:** Alexia Cardona, Mark Fernandes, Ashley Sawle
-
+**Instructors:** Stephane Ballereau, Alexia Cardona, Kamal Kishore, Sankari Nagarajan, Jon Price, Ashley Sawle
 <br/>
 
 ### Description
