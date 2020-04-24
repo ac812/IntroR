@@ -1,6 +1,6 @@
 ---
 title: "Introduction to R for Biologists"
-author:  Alexia Cardona
+author: "Author: Alexia Cardona"
 toc: hide
 ---
 
@@ -8,8 +8,6 @@ toc: hide
 20-21 April 2020   
 Bioinformatics Training Facility
 
-**Instructors:** Stephane Ballereau, Alexia Cardona, Kamal Kishore, Sankari Nagarajan, Jon Price, Ashley Sawle
-<br/>
 
 ### Description
 
