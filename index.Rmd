@@ -4,9 +4,10 @@ author: "Author: Alexia Cardona"
 toc: hide
 ---
 
-<br/>
-20-21 April 2020   
-Bioinformatics Training Facility
+Bioinformatics Training Facility  
+University of Cambridge
+
+</br>
 
 
 ### Description
