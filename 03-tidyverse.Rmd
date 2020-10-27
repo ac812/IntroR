@@ -451,9 +451,7 @@ surveys_recent
                   filter(year >= 1995)
 >ggplot(mapping=aes(x=weight, y=hindfoot_length)) +
 >  geom_point(data=surveys_complete) +
->  geom_point(data=survey_recent, aes(color="red")) +
->  #remove lengend
->  theme(legend.position = "none") 
+>  geom_point(data=survey_recent, color="red")
 >```
 >**Note:** In the example above we did not specify the `data` argument in the `ggplot` function because the arguments in the `ggplot` function should be common throughout the whole plot.  In this case we specified the respective data as separate layers in 2 different `geom_point` plots; the first plot is the data with all the animals in `surveys_complete` (points in black), the second plot is layered on top of the first plot which is a subset of the `surveys_complete` dataset (points in red).
 
