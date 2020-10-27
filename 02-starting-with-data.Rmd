@@ -280,14 +280,27 @@ In case you are wondering what a *Neotoma albigula* is:
 
 When we did `str(surveys)` we saw that several of the columns consist of
 integers. The columns `genus`, `species`, `sex`, `plot_type`, ... however, are
-of a special class called `factor`. Factors are very useful and actually
-contribute to making R particularly well suited to working with data. So we are
-going to spend a little time introducing them.
+of the class `character`. Arguably, these columns contain categorical data, that is, they can only take on a limited number of values.
 
-Factors represent categorical data. They are stored as integers associated with labels and they can be ordered or unordered. While factors look (and often behave) like character vectors, they are actually treated as integer vectors by R. So you need to be very careful when treating them as strings.
+R has a special class for working with categorical data, called `factor`. Factors are very useful and actually contribute to making R particularly well suited to working with data. So we are going to spend a little time introducing them.
 
 Once created, factors can only contain a pre-defined set of values, known as
-*levels*. By default, R always sorts levels in alphabetical order. For
+*levels*.  Factors are stored as integers associated with labels and they can be ordered or unordered. While factors look (and often behave) like character vectors, they are actually treated as integer vectors by R. So you need to be very careful when treating them as strings.
+
+We can convert these columns that contain categorical data to type factor by using the `factor()` function:
+
+```{r, purl=FALSE}
+surveys$sex <- factor(surveys$sex)
+```
+
+We can see that the conversion has worked by using the `summary()` 
+function again. This produces a table with the counts for each factor level:
+
+```{r, purl=FALSE}
+summary(surveys$sex)
+```
+
+By default, R always sorts levels in alphabetical order. For
 instance, if you have a factor with 2 levels:
 
 ```{r, purl=TRUE}
@@ -321,6 +334,37 @@ informative than integers because factors are self describing: `"female"`,
 be able to tell just from the integer data. Factors, on the other hand, have
 this information built in. It is particularly helpful when there are many levels
 (like the species names in our example dataset).
+
+
+> ### Challenge
+>
+> 1. Change the columns `taxa` and `genus` in the `surveys` data frame into a 
+>    factor.
+>
+> 2. Using the functions you learned before, can you find out...
+>
+>      * How many rabbits were observed?
+>      * How many different genera are in the `genus` column?
+>
+> ```{r, answer=TRUE, purl=FALSE}
+> surveys$genus <- factor(surveys$genus)
+> summary(surveys)
+> nlevels(surveys$genus)
+>
+> ## * how many genera: There are 26 unique genera in the `genus` column.
+> ## * how many rabbts: There are 75 rabbits in the `taxa` column.
+> ``` 
+```{r, echo=FALSE, purl=TRUE}
+### Challenges:
+###
+### 1. Change the columns `taxa` and `genus` in the `surveys` data frame into a 
+###    factor.
+###
+### 2. Using the functions you learned before, can you find out...
+###
+###      * How many rabbits were observed?
+###      * How many different genera are in the `genus` column?
+```
 
 ### Converting factors
 
@@ -370,15 +414,14 @@ the experiment:
 plot(surveys$sex)
 ```
 
-In addition to males and females, there are about 1700 individuals for which the
-sex information hasn't been recorded. Additionally, for these individuals,
-there is no label to indicate that the information is missing or undetermined. Let's rename this
-label to something more meaningful. Before doing that, we're going to pull out
-the data on sex and work with that data, so we're not modifying the working copy
-of the data frame:
+However, as we saw when we used `summary(surveys$sex)`, there are about 1700 
+individuals for which the sex information hasn't been recorded. To show them in
+the plot, we can turn the missing values into a factor level.  We will also have to give the new factor level a label.  We are going to work with a copy of the `sex` column, so we're not modifying the 
+working copy of the data frame:
+
 
 ```{r, results=TRUE, purl=FALSE}
-sex <- surveys$sex
+sex <- as.factor(surveys$sex)
 head(sex)
 levels(sex)
 levels(sex)[1] <- "undetermined"
@@ -386,6 +429,11 @@ levels(sex)
 head(sex)
 ```
 
+Now we can plot the data again, using `plot(sex)`.
+
+```{r echo=FALSE, purl=FALSE, results=TRUE}
+plot(sex)
+```
 
 > ### Challenge
 >
@@ -400,25 +448,9 @@ head(sex)
 > ``` 
 
 
-```{r wrong-order, results='show', echo=FALSE, purl=TRUE}
-## Challenges
-##
-## * Rename "F" and "M" to "female" and "male" respectively.
-## * Now that we have renamed the factor level to "undetermined", can you recreate the
-##   barplot such that "undetermined" is last (after "male")
-```
+### Using `stringsAsFactors=TRUE`
 
-
-### Using `stringsAsFactors=FALSE`
-
-By default, when building or importing a data frame, the columns that contain
-characters (i.e. text) are coerced (= converted) into factors. Depending on what you want to do with the data, you may want to keep these
-columns as `character`. To do so, `read.csv()` and `read.table()` have an
-argument called `stringsAsFactors` which can be set to `FALSE`.
-
-In most cases, it is preferable to set `stringsAsFactors = FALSE` when importing
-data and to convert as a factor only the columns that require this data
-type.
+Depending on what you want to do with the data, when you have a column with categorical data you may want to keep these columns as `character` or else you may want to change them to `factor`. To do so, `read.csv()` and `read.table()` have an argument called `stringsAsFactors` which can be set to `TRUE`.
 
 
 ```{r, eval=FALSE, purl=TRUE}
@@ -446,17 +478,11 @@ surveys$plot_type <- factor(surveys$plot_type)
 >               weight = c(45, 8 1.1, 0.8)
 >               )
 >     ```
->
->     ```{r, eval=FALSE, purl=TRUE, echo=FALSE}
->     ## Challenge:
->     ##  There are a few mistakes in this hand-crafted `data.frame`,
->     ##  can you spot and fix them? Don't hesitate to experiment!
->     animal_data <- data.frame(
->           animal = c(dog, cat, sea cucumber, sea urchin),
->           feel = c("furry", "squishy", "spiny"),
->           weight = c(45, 8 1.1, 0.8)
->           )
->     ```
+> ```{text_answer, echo=FALSE, purl=FALSE}
+>    * missing quotations around the names of the animals
+>    * missing one entry in the `feel` column (probably for one of the furry animals)
+>    * missing one comma in the `weight` column
+> ```
 >
 > 2. Can you predict the class for each of the columns in the following example?
 >    Check your guesses using `str(country_climate)`:
@@ -474,31 +500,11 @@ surveys$plot_type <- factor(surveys$plot_type)
 >            )
 >     ```
 >
->    ```{r, eval=FALSE, purl=TRUE, echo=FALSE}
->    ## Challenge:
->    ##   Can you predict the class for each of the columns in the following
->    ##   example?
->    ##   Check your guesses using `str(country_climate)`:
->    ##   * Are they what you expected? Why? why not?
->    ##   * What would have been different if we had added `stringsAsFactors = FALSE`
->    ##     when we created this data frame?
->    ##   * What would you need to change to ensure that each column had the
->    ##     accurate data type?
->    country_climate <- data.frame(country = c("Canada", "Panama", "South Africa", "Australia"),
->                                   climate = c("cold", "hot", "temperate", "hot/temperate"),
->                                   temperature = c(10, 30, 18, "15"),
->                                   northern_hemisphere = c(TRUE, TRUE, FALSE, "FALSE"),
->                                   has_kangaroo = c(FALSE, FALSE, FALSE, 1))
->    ```
->
 >    ```{text_answer, echo=FALSE, purl=FALSE}
->    * missing quotations around the names of the animals
->    * missing one entry in the `feel` column (probably for one of the furry animals)
->    * missing one comma in the `weight` column
 >    * `country`, `climate`, `temperature`, and `northern_hemisphere` are
->       factors; `has_kangaroo` is numeric
->    * using `stringsAsFactors = FALSE` would have made character vectors instead of
->      factors
+>       character; `has_kangaroo` is numeric
+>    * using `stringsAsFactors = TRUE` would have made factor vectors instead of
+>      character
 >    * removing the quotes in `temperature` and `northern_hemisphere` and replacing 1
 >      by TRUE in the `has_kangaroo` column would give what was probably 
 >      intended
@@ -510,8 +516,6 @@ annoyance. Be aware that it exists, learn the rules, and double check that data
 you import in R are of the correct type within your data frame. If not, use it
 to your advantage to detect mistakes that might have been introduced during data
 entry (for instance, a letter in a column that should only contain numbers).
-
-Learn more in this [RStudio tutorial](https://support.rstudio.com/hc/en-us/articles/218611977-Importing-Data-with-RStudio)
 
 
 
