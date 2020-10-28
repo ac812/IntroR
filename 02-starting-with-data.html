@@ -3126,13 +3126,20 @@ div.tocify {
 <p>This statement doesn’t produce any output because, as you might recall, assignments don’t display anything. If we want to check that our data has been loaded, we can see the contents of the data frame by typing its name: <code>surveys</code>.</p>
 <p>Wow… that was a lot of output. At least it means the data loaded properly. Let’s check the top (the first 6 lines) of this data frame using the function <code>head()</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">head</span>(surveys)</span></code></pre></div>
-<pre><code>#&gt;   record_id month day year plot_id species_id sex hindfoot_length weight   genus  species   taxa plot_type
-#&gt; 1         1     7  16 1977       2         NL   M              32     NA Neotoma albigula Rodent   Control
-#&gt; 2        72     8  19 1977       2         NL   M              31     NA Neotoma albigula Rodent   Control
-#&gt; 3       224     9  13 1977       2         NL                  NA     NA Neotoma albigula Rodent   Control
-#&gt; 4       266    10  16 1977       2         NL                  NA     NA Neotoma albigula Rodent   Control
-#&gt; 5       349    11  12 1977       2         NL                  NA     NA Neotoma albigula Rodent   Control
-#&gt; 6       363    11  12 1977       2         NL                  NA     NA Neotoma albigula Rodent   Control</code></pre>
+<pre><code>#&gt;   record_id month day year plot_id species_id sex hindfoot_length weight   genus  species   taxa
+#&gt; 1         1     7  16 1977       2         NL   M              32     NA Neotoma albigula Rodent
+#&gt; 2        72     8  19 1977       2         NL   M              31     NA Neotoma albigula Rodent
+#&gt; 3       224     9  13 1977       2         NL                  NA     NA Neotoma albigula Rodent
+#&gt; 4       266    10  16 1977       2         NL                  NA     NA Neotoma albigula Rodent
+#&gt; 5       349    11  12 1977       2         NL                  NA     NA Neotoma albigula Rodent
+#&gt; 6       363    11  12 1977       2         NL                  NA     NA Neotoma albigula Rodent
+#&gt;   plot_type
+#&gt; 1   Control
+#&gt; 2   Control
+#&gt; 3   Control
+#&gt; 4   Control
+#&gt; 5   Control
+#&gt; 6   Control</code></pre>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">## Try also</span></span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="kw">View</span>(surveys)</span></code></pre></div>
 <blockquote>
@@ -3195,7 +3202,7 @@ div.tocify {
 <ul>
 <li>What is the class of the object <code>surveys</code>?</li>
 <li>How many rows and how many columns are in this object?</li>
-<li>How many taxa have been recorded during these surveys?</li>
+<li>Which columns are of type <code>character</code>?</li>
 </ul>
 <div class="accordion">
 <h3 class="toc-ignore">
@@ -3206,7 +3213,7 @@ Answer
 <span id="cb9-2"><a href="#cb9-2"></a></span>
 <span id="cb9-3"><a href="#cb9-3"></a><span class="co">## * class: data frame</span></span>
 <span id="cb9-4"><a href="#cb9-4"></a><span class="co">## * how many rows: 34786,  how many columns: 13</span></span>
-<span id="cb9-5"><a href="#cb9-5"></a><span class="co">## * how many taxa: 4</span></span></code></pre></div>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="co">## * columns of type `character`: species_id, sex, genus, species, taxa, plot_type</span></span></code></pre></div>
 </div>
 </div>
 </blockquote>
