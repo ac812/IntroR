@@ -158,15 +158,14 @@ objects besides `data.frame`.
 >
 > * What is the class of the object `surveys`?
 > * How many rows and how many columns are in this object?
-> * How many taxa have been recorded during these surveys?
+> * Which columns are of type `character`?
 >
 > ```{r, answer=TRUE}
 > str(surveys)
 >
 > ## * class: data frame
 > ## * how many rows: 34786,  how many columns: 13
-> ## * how many taxa: 4
->
+> ## * columns of type `character`: species_id, sex, genus, species, taxa, plot_type
 > ```
 
 
