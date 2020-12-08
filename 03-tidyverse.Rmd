@@ -482,10 +482,10 @@ There are other ways on how to create new columns.  Refer to the dplyr cheat she
 
 > ### Challenge - the boxplot
 >
-> Using the `surveys_complete` dataset, create a [boxplot](https://ggplot2.tidyverse.org/reference/geom_boxplot.html) for each year on the x-axis and weight in kg on the y-axis. Use the subset dataset that was transformed in the previous challenge, *i.e.* the one that has the recent observations (from 1995 onwards).  As before try to do all the operations using pipes, without creating variables.  
+> Using the `surveys_complete` dataset, create a [boxplot](https://ggplot2.tidyverse.org/reference/geom_boxplot.html) for each year on the x-axis and weight in kg on the y-axis. Filter the dataset so that only recent observations (from 1995 onwards) are used.  As before try to do all the operations using pipes, without creating variables.  
 
->
-> **Answer**
+><details>
+> <summary>Show Answer</summary>
 > 
 >Your first attempt would be to use the code we used before to subset the `surveys_complete` dataset, but also adding the `mutate` function to add a new `weight_kg` column. Further more you will need to also add the `ggplot` function to draw a boxplot:
 >
@@ -493,8 +493,6 @@ There are other ways on how to create new columns.  Refer to the dplyr cheat she
 >surveys_complete %>%
 >  #add weight_kg column
 >  mutate(weight_kg = weight / 1000) %>%
->  #select columns
->  select(species_id, weight_kg, hindfoot_length, year, sex) %>%
 >  #filter rows
 >  filter(year >= 1995) %>%
 >  #plot transformed data
@@ -508,8 +506,6 @@ There are other ways on how to create new columns.  Refer to the dplyr cheat she
 >surveys_complete %>%
 >  #add weight_kg column
 >  mutate(weight_kg = weight / 1000) %>%
->  #select columns
->  select(species_id, weight_kg, hindfoot_length, year, sex) %>%
 >  #filter rows
 >  filter(year >= 1995) %>%
 >  #convert the year column to a factor
@@ -526,7 +522,7 @@ There are other ways on how to create new columns.  Refer to the dplyr cheat she
 >As mentioned the boxplot is used to visualise the distribution of a continuous variable.  In the example above we displayed the distribution of `weight` over the different years.  The figure below illustrates the different components of the boxplot. The bottom line of the box represents the 25th quantile, middle line the 50th quantile (or median) and the top line of the box is the 75th quantile. The whiskers can be thought of as defining the boundary of the confidence intervals of the distribution.  The dots outside these whiskers are the outliers.  
 >
 ><center><img src="img/boxplot.png" width="60%"/></center>
->
+></details>
 
 <br/>
 
@@ -847,6 +843,7 @@ ggplot(data = yearly_sex_counts,
 ## Customisation
 
 Though the default visualisation of `ggplot2` plots is already at a good standard, there are several ways one can improve even further the visualisations.  
+
 ### Labels
 
 Let us start customising the last plot we have plotted by renaming the axes and adding a title to the plot.  This is done by using the [`labs`](https://ggplot2.tidyverse.org/reference/labs.html) function:
