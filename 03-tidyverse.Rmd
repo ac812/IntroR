@@ -449,6 +449,7 @@ surveys_recent
 >survey_recent <- surveys_complete %>%
                   select(species_id, weight, hindfoot_length, year, sex) %>%
                   filter(year >= 1995)
+>
 >ggplot(mapping=aes(x=weight, y=hindfoot_length)) +
 >  geom_point(data=surveys_complete) +
 >  geom_point(data=survey_recent, color="red")
@@ -480,51 +481,6 @@ There are other ways on how to create new columns.  Refer to the dplyr cheat she
 
 <br/>
 
-> ### Challenge - the boxplot
->
-> Using the `surveys_complete` dataset, create a [boxplot](https://ggplot2.tidyverse.org/reference/geom_boxplot.html) for each year on the x-axis and weight in kg on the y-axis. Filter the dataset so that only recent observations (from 1995 onwards) are used.  As before try to do all the operations using pipes, without creating variables.  
-
-><details>
-> <summary>Show Answer</summary>
-> 
->Your first attempt would be to use the code we used before to subset the `surveys_complete` dataset, but also adding the `mutate` function to add a new `weight_kg` column. Further more you will need to also add the `ggplot` function to draw a boxplot:
->
->```{r}
->surveys_complete %>%
->  #add weight_kg column
->  mutate(weight_kg = weight / 1000) %>%
->  #filter rows
->  filter(year >= 1995) %>%
->  #plot transformed data
->  ggplot(mapping=aes(x=year, y=weight_kg)) +
->    geom_boxplot()
->```
->
->You might notice that this code produces a warning message about the continuous data type of the x-axis and also creates a box plot with one single box and whisker averaged over all the years on the x-axis, rather than one for each year in the dataset as requested.  As shown in the [`ggplot2` cheat sheet](https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf), box plots display a discrete variable on the x-axis and a continuous variable on the y-axis.  At the moment `year` is treated as a continuous variable since its data type is `double`  (you can see this from the tibble).  To fix this, we need to convert the data type of the `year` column to a categorical one (`factor`) so that each year can be plotted as a separate box and whisker.  
->
->```{r}
->surveys_complete %>%
->  #add weight_kg column
->  mutate(weight_kg = weight / 1000) %>%
->  #filter rows
->  filter(year >= 1995) %>%
->  #convert the year column to a factor
->  mutate(year=as.factor(year)) %>%
->  #plot transformed data
->  ggplot(mapping=aes(x=year, y=weight_kg)) +
->    geom_boxplot()
->```
->
->Notice that since we need to keep only observations that have been observed from 1995 onwards, we need to convert the `year` column to a `factor` *after* we filter the rows, as otherwise the row filtering operation will not be possible.  This is because the new `year` column of type `factor` does not have any ordering in its categories so perfoming `year >= 1995` would not be possible.
->
-> **Note on the boxplot**
->
->As mentioned the boxplot is used to visualise the distribution of a continuous variable.  In the example above we displayed the distribution of `weight` over the different years.  The figure below illustrates the different components of the boxplot. The bottom line of the box represents the 25th quantile, middle line the 50th quantile (or median) and the top line of the box is the 75th quantile. The whiskers can be thought of as defining the boundary of the confidence intervals of the distribution.  The dots outside these whiskers are the outliers.  
->
-><center><img src="img/boxplot.png" width="60%"/></center>
-></details>
-
-<br/>
 
 ## Sorting data
 
@@ -652,38 +608,6 @@ This creates a line for each genus. However, since they are all in the same colo
 ggplot(data = yearly_counts, mapping = aes(x = year, y = n, color = genus)) +
     geom_line()
 ```
-
-<br/>
-
-## Plotting histograms
-
-If you would like to plot the distribution of a **single continuous variable** the frequency will be automatically calculated, so you do not need to use `count()` to calculate the frequency beforehand.  The x-axis is automatically divided into bins and the number of observations of the continuous variable in each bin is shown as a bar in the histogram.  In the `ggplot2` package a histogram can be plotted using the `geom_histogram` function.  
-
-Let us plot a histogram for the continuous variable `weight`:
-```{r, fig.show=TRUE, message=FALSE}
-ggplot(surveys_complete, aes(weight)) +
-  geom_histogram()
-```
-You can identify display categories in the histogram by plotting a stacked histogram which will show categories for each group stacked on top of each other.  This is done by using the `fill` argument in the aesthetic function.  If we want to display `sex` in our `weight` histogram:
-
-```{r, fig.show=TRUE, message=FALSE}
-ggplot(surveys_complete, aes(weight, fill=sex)) +
-  geom_histogram(bins=100)
-```
-Note that the default number of bins in a histogram is 30.  To get have a granular display you can increase the number of bins by using the argument `bins` in the `geom_histogram` function as above.
-
-There are other plots that can be used for a single continuous variable (see ONE VARIABLE continuous section on [ggplot2 cheat sheet](https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf)).
-
-
-> ### Challenge - `geom_freqpoly()`
->
->Use the `geom_freqpoly()` to display frequency polygons instead of bars for the distribution of `weight`.  Show `sex` category as before in a different colour.  
->**Hint:** Use the argument `color` in the aesthetic function rather than `fill` to display a frequency polygon for each `sex` category in a different colour.  
->
->```{r, answer=TRUE, message=FALSE}
->ggplot(surveys_complete, aes(weight, color=sex)) +
->  geom_freqpoly()
->```
 
 <br/>
 
@@ -840,7 +764,7 @@ ggplot(data = yearly_sex_counts,
 
 <br/>
 
-## Customisation
+## Customisation (optional)
 
 Though the default visualisation of `ggplot2` plots is already at a good standard, there are several ways one can improve even further the visualisations.  
 
@@ -942,7 +866,85 @@ Let us save the `surveys_complete` tibble in `data_output/surveys_complete.csv` 
 
 ```{r}
 write_csv(surveys_complete, path = "data_output/surveys_complete.csv")
+
 ```
+<br/>
+
+# Optional sections
+
+> ## Challenge - the boxplot
+>
+> Using the `surveys_complete` dataset, create a [boxplot](https://ggplot2.tidyverse.org/reference/geom_boxplot.html) for each year on the x-axis and weight in kg on the y-axis. Filter the dataset so that only recent observations (from 1995 onwards) are used.  As before try to do all the operations using pipes, without creating variables.  
+
+><details>
+> <summary>Show Answer</summary>
+> 
+>Your first attempt would be to use the code we used before to subset the `surveys_complete` dataset, but also adding the `mutate` function to add a new `weight_kg` column. Further more you will need to also add the `ggplot` function to draw a boxplot:
+>
+>```{r}
+>surveys_complete %>%
+>  #add weight_kg column
+>  mutate(weight_kg = weight / 1000) %>%
+>  #filter rows
+>  filter(year >= 1995) %>%
+>  #plot transformed data
+>  ggplot(mapping=aes(x=year, y=weight_kg)) +
+>    geom_boxplot()
+>```
+>
+>You might notice that this code produces a warning message about the continuous data type of the x-axis and also creates a box plot with one single box and whisker averaged over all the years on the x-axis, rather than one for each year in the dataset as requested.  As shown in the [`ggplot2` cheat sheet](https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf), box plots display a discrete variable on the x-axis and a continuous variable on the y-axis.  At the moment `year` is treated as a continuous variable since its data type is `double`  (you can see this from the tibble).  To fix this, we need to convert the data type of the `year` column to a categorical one (`factor`) so that each year can be plotted as a separate box and whisker.  
+>
+>```{r}
+>surveys_complete %>%
+>  #add weight_kg column
+>  mutate(weight_kg = weight / 1000) %>%
+>  #filter rows
+>  filter(year >= 1995) %>%
+>  #convert the year column to a factor
+>  mutate(year=as.factor(year)) %>%
+>  #plot transformed data
+>  ggplot(mapping=aes(x=year, y=weight_kg)) +
+>    geom_boxplot()
+>```
+>
+>Notice that since we need to keep only observations that have been observed from 1995 onwards, we need to convert the `year` column to a `factor` *after* we filter the rows, as otherwise the row filtering operation will not be possible.  This is because the new `year` column of type `factor` does not have any ordering in its categories so perfoming `year >= 1995` would not be possible.
+>
+> **Note on the boxplot**
+>
+>As mentioned the boxplot is used to visualise the distribution of a continuous variable.  In the example above we displayed the distribution of `weight` over the different years.  The figure below illustrates the different components of the boxplot. The bottom line of the box represents the 25th quantile, middle line the 50th quantile (or median) and the top line of the box is the 75th quantile. The whiskers can be thought of as defining the boundary of the confidence intervals of the distribution.  The dots outside these whiskers are the outliers.  
+>
+><center><img src="img/boxplot.png" width="60%"/></center>
+></details>
+
+<br/>
+
+## Plotting histograms
+
+If you would like to plot the distribution of a **single continuous variable** the frequency will be automatically calculated, so you do not need to use `count()` to calculate the frequency beforehand.  The x-axis is automatically divided into bins and the number of observations of the continuous variable in each bin is shown as a bar in the histogram.  In the `ggplot2` package a histogram can be plotted using the `geom_histogram` function.  
+
+Let us plot a histogram for the continuous variable `weight`:
+```{r, fig.show=TRUE, message=FALSE}
+ggplot(surveys_complete, aes(weight)) +
+  geom_histogram()
+```
+You can identify display categories in the histogram by plotting a stacked histogram which will show categories for each group stacked on top of each other.  This is done by using the `fill` argument in the aesthetic function.  If we want to display `sex` in our `weight` histogram:
+
+```{r, fig.show=TRUE, message=FALSE}
+ggplot(surveys_complete, aes(weight, fill=sex)) +
+  geom_histogram(bins=100)
+```
+Note that the default number of bins in a histogram is 30.  To get have a granular display you can increase the number of bins by using the argument `bins` in the `geom_histogram` function as above.
+
+There are other plots that can be used for a single continuous variable (see ONE VARIABLE continuous section on [ggplot2 cheat sheet](https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf)).
 
 
+> ### Challenge - `geom_freqpoly()`
+>
+>Use the `geom_freqpoly()` to display frequency polygons instead of bars for the distribution of `weight`.  Show `sex` category as before in a different colour.  
+>**Hint:** Use the argument `color` in the aesthetic function rather than `fill` to display a frequency polygon for each `sex` category in a different colour.  
+>
+>```{r, answer=TRUE, message=FALSE}
+>ggplot(surveys_complete, aes(weight, color=sex)) +
+>  geom_freqpoly()
+>```
 

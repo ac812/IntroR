@@ -3126,20 +3126,13 @@ div.tocify {
 <p>This statement doesn’t produce any output because, as you might recall, assignments don’t display anything. If we want to check that our data has been loaded, we can see the contents of the data frame by typing its name: <code>surveys</code>.</p>
 <p>Wow… that was a lot of output. At least it means the data loaded properly. Let’s check the top (the first 6 lines) of this data frame using the function <code>head()</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">head</span>(surveys)</span></code></pre></div>
-<pre><code>#&gt;   record_id month day year plot_id species_id sex hindfoot_length weight   genus  species   taxa
-#&gt; 1         1     7  16 1977       2         NL   M              32     NA Neotoma albigula Rodent
-#&gt; 2        72     8  19 1977       2         NL   M              31     NA Neotoma albigula Rodent
-#&gt; 3       224     9  13 1977       2         NL                  NA     NA Neotoma albigula Rodent
-#&gt; 4       266    10  16 1977       2         NL                  NA     NA Neotoma albigula Rodent
-#&gt; 5       349    11  12 1977       2         NL                  NA     NA Neotoma albigula Rodent
-#&gt; 6       363    11  12 1977       2         NL                  NA     NA Neotoma albigula Rodent
-#&gt;   plot_type
-#&gt; 1   Control
-#&gt; 2   Control
-#&gt; 3   Control
-#&gt; 4   Control
-#&gt; 5   Control
-#&gt; 6   Control</code></pre>
+<pre><code>#&gt;   record_id month day year plot_id species_id sex hindfoot_length weight   genus  species   taxa plot_type
+#&gt; 1         1     7  16 1977       2         NL   M              32     NA Neotoma albigula Rodent   Control
+#&gt; 2        72     8  19 1977       2         NL   M              31     NA Neotoma albigula Rodent   Control
+#&gt; 3       224     9  13 1977       2         NL                  NA     NA Neotoma albigula Rodent   Control
+#&gt; 4       266    10  16 1977       2         NL                  NA     NA Neotoma albigula Rodent   Control
+#&gt; 5       349    11  12 1977       2         NL                  NA     NA Neotoma albigula Rodent   Control
+#&gt; 6       363    11  12 1977       2         NL                  NA     NA Neotoma albigula Rodent   Control</code></pre>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">## Try also</span></span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="kw">View</span>(surveys)</span></code></pre></div>
 <blockquote>
@@ -3345,7 +3338,7 @@ Answer
 <span id="cb23-3"><a href="#cb23-3"></a><span class="kw">nlevels</span>(surveys<span class="op">$</span>genus)</span>
 <span id="cb23-4"><a href="#cb23-4"></a></span>
 <span id="cb23-5"><a href="#cb23-5"></a><span class="co">## * how many genera: There are 26 unique genera in the `genus` column.</span></span>
-<span id="cb23-6"><a href="#cb23-6"></a><span class="co">## * how many rabbts: There are 75 rabbits in the `taxa` column.</span></span></code></pre></div>
+<span id="cb23-6"><a href="#cb23-6"></a><span class="co">## * how many rabbits: There are 75 rabbits in the `taxa` column.</span></span></code></pre></div>
 </div>
 </div>
 </blockquote>
@@ -3365,7 +3358,11 @@ Answer
 <li>We convert these levels to numeric values using <code>as.numeric(levels(year_fct))</code></li>
 <li>We then access these numeric values using the underlying integers of the vector <code>year_fct</code> inside the square brackets</li>
 </ul>
+<p></br></p>
 </div>
+</div>
+<div id="optional-sections" class="section level2">
+<h2>Optional sections</h2>
 <div id="renaming-factors" class="section level3">
 <h3>Renaming factors</h3>
 <p>When your data is stored as a factor, you can use the <code>plot()</code> function to get a quick glance at the number of observations represented by each factor level. Let’s look at the number of males and females captured over the course of the experiment:</p>

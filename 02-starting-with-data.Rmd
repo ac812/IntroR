@@ -271,6 +271,8 @@ In case you are wondering what a *Neotoma albigula* is:
 > surveys_head <- surveys[-(7:n_rows), ]
 > ```
 
+
+
 ## Factors
 
 ```{r, echo=FALSE, purl=TRUE}
@@ -351,7 +353,7 @@ this information built in. It is particularly helpful when there are many levels
 > nlevels(surveys$genus)
 >
 > ## * how many genera: There are 26 unique genera in the `genus` column.
-> ## * how many rabbts: There are 75 rabbits in the `taxa` column.
+> ## * how many rabbits: There are 75 rabbits in the `taxa` column.
 > ``` 
 ```{r, echo=FALSE, purl=TRUE}
 ### Challenges:
@@ -400,6 +402,10 @@ Notice that in the `levels()` approach, three important steps occur:
 * We convert these levels to numeric values using `as.numeric(levels(year_fct))`
 * We then access these numeric values using the underlying integers of the
   vector `year_fct` inside the square brackets
+
+</br>
+
+## Optional sections
 
 ### Renaming factors
 
